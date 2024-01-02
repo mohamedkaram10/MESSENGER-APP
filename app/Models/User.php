@@ -10,7 +10,9 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens;
+    use HasFactory;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -43,19 +45,23 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function conversations() {
+    public function conversations()
+    {
         return $this->belongsToMany(Conversation::class, 'participants')
+        ->latest('last_message_id')
         ->withPivot([
             'role',
-            'joined_at'
+            'joined_at',
         ]);
     }
 
-    public function sendMessages() {
+    public function sendMessages()
+    {
         return $this->belongsToMany(Message::class, 'user_id');
     }
 
-    public function receivedMessages() {
+    public function receivedMessages()
+    {
         return $this->belongsToMany(Message::class, 'recipients')
         ->withPivot([
             'read_at',
