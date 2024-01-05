@@ -30,7 +30,7 @@ class MessagesController extends Controller
      */
     public function store(MessageRequest $request)
     {
-        $user = User::find(1);
+        $user = User::find(2);
         $conversation_id = $request->post('conversation_id');
         $user_id = $request->post('user_id');
 
